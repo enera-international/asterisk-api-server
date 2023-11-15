@@ -1,0 +1,12 @@
+[Unit]
+Description=Enera asterisk API Service
+After=network.target
+
+[Service]
+Type=simple
+User=root
+ExecStart=/usr/bin/node /usr/local/enera-asterisk-api-server/dist/index.js
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
