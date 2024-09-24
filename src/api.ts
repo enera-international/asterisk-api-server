@@ -11,9 +11,8 @@ export class EneraAsteriskApiServer {
     }
     async run() {
         console.log('running')
-        console.log(this.asterisk_manager_general_conf_template(1234, 'hej', '1.2.3.4'))
-        await new Promise(res => setTimeout(res, 5000))
-        console.log('stopping')
+        for (;;)
+            await new Promise(res => setTimeout(res, 5000))
     }
     asterisk_manager_general_conf_template(amiport: number, secret: string, ip: string) {
         return `port=${amiport}
