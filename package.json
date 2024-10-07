@@ -37,7 +37,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@source-repo/msgrpc": "file:../project-builder/backends/packages/msgrpc/source-repo-msgrpc-0.1.2.tgz",
+    "@source-repo/msgrpc": "file:source-repo-msgrpc-0.1.2.tgz",
     "@types/bcryptjs": "^2.4.6",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.20",
