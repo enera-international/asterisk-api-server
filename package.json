@@ -4,7 +4,19 @@
   "description": "",
   "main": "index.js",
   "bin": "index.js",
-  "bundleDependencies": true,
+  "type": "module",
+  "bundleDependencies": [
+    "@types/bcryptjs",
+    "@types/express",
+    "@types/jsonwebtoken",
+    "bcryptjs",
+    "express",
+    "express-validator",
+    "is-valid-hostname",
+    "jsonwebtoken",
+    "ts-node",
+    "typescript"
+  ],
   "pkg": {
     "scripts": [
       "*.js"
@@ -25,16 +37,26 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@source-repo/msgrpc": "file:../project-builder/backends/packages/msgrpc/source-repo-msgrpc-0.1.2.tgz",
     "@types/bcryptjs": "^2.4.6",
+    "@types/cors": "^2.8.17",
     "@types/express": "^4.17.20",
     "@types/jsonwebtoken": "^9.0.4",
+    "@types/lodash": "^4.17.9",
+    "@types/uuid": "^10.0.0",
     "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
     "express": "^4.18.2",
     "express-validator": "^7.0.1",
     "is-valid-hostname": "^1.0.2",
     "jsonwebtoken": "^9.0.2",
+    "lodash": "^4.17.21",
+    "mongodb": "^6.9.0",
+    "socket.io": "^4.8.0",
+    "socket.io-client": "^4.8.0",
     "ts-node": "^10.9.1",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.8.7"

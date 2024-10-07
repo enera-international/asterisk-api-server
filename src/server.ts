@@ -2,7 +2,7 @@ import express, { Request, Response, NextFunction } from 'express'
 import { body, validationResult } from 'express-validator'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import { EneraAsteriskApiServer } from './api'
+import { EneraAsteriskApiServer } from './api.js'
 
 export const apiVersion = "2.0.0"
 
