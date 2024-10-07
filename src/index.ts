@@ -9,6 +9,9 @@ const main = async () => {
 
   const eneraAsteriskApiServer = new EneraAsteriskApiServer()
   new Server(eneraAsteriskApiServer)
+  for (;;) {
+    await new Promise(res => setTimeout(res, 1000))
+  }
 }
 
 main()
