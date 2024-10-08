@@ -80,12 +80,12 @@ export class DataProvider<ResourceType extends string = string> implements IData
         await this.mongoDbClient?.close()
         await this.mqttClient?.endAsync()
     }
-    async getList<RecordType extends RaRecord = any>(resource: ResourceType, params: GetListParams = { pagination: { page: 1, perPage: 10 }, filter: {}, sort: { field: 'id', order: 'ASC' } }): Promise<GetListResult<RecordType>> {
+    async getList<RecordType extends RaRecord = any>(resource: ResourceType, params: Partial<GetListParams> = { pagination: { page: 1, perPage: 10 }, filter: {}, sort: { field: 'id', order: 'ASC' } }): Promise<GetListResult<RecordType>> {
         this.checkResource(resource)
         const result = await this.getListByField(resource, { id: '', target: 'id', ...params })
         return { data: result.data, total: result.total }
     }
-    async getListByField<RecordType extends RaRecord = any>(resource: ResourceType, params: GetManyReferenceParams): Promise<GetManyReferenceResult<RecordType>> {
+    async getListByField<RecordType extends RaRecord = any>(resource: ResourceType, params: Partial<GetManyReferenceParams>): Promise<GetManyReferenceResult<RecordType>> {
         this.checkResource(resource)
         const target = (params.target === 'id') ? '_id' : params.target
         let from = 0
@@ -265,13 +265,13 @@ export class DataProvider<ResourceType extends string = string> implements IData
     }
     async deleteMany<RecordType extends RaRecord<Identifier> = any>(resource: ResourceType, params: DeleteManyParams<RecordType>) {
         this.checkResource(resource)
-        const ids = params.ids.map(id => ObjectId.createFromHexString(id as string))
+        const ids = params.ids.map(id => this.converter.toMongoDB(id as string))
         const response = await this.dbs[resource].deleteMany({ _id: { $in: ids } })
         for (const id of ids)
             await this.addEvent(resource, 'deleteMany', id)
         let data: RecordType['id'][]
         if (response.acknowledged && response.deletedCount === params.ids.length)
-            data = params.ids
+            data = this.converter.toReactAdmin(params.ids)
         else
             data = []
         return { data }

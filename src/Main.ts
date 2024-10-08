@@ -37,6 +37,15 @@ export class Main {
         await this.dataProvider.close()
     }
     async init() {
+        await this.dataProvider.waitReady()
+        let result = await this.dataProvider.getList('clients', { filter: { name: 'linehandler' } })
+        if (!result.data?.length) {
+            await this.dataProvider.createOne('clients', { name: 'linehandler', password: 'Qfpy65OWa6cRBxoctkqEtr2SKl1gNuQLOP42u8j25Gi5NykPkUm7KHsABjLGyvel' })
+        }
+        result = await this.dataProvider.getList('users', { filter: { name: 'admin' } })
+        if (!result.data?.length) {
+            await this.dataProvider.createOne('users', { username: 'admin', password: 'public', fullName: 'Administrator', isActive: true, role: ['admin'] })
+        }
         if (this.app) {
             this.app.use(express.json());
             this.app.use(cors())
@@ -51,11 +60,21 @@ export class Main {
             const rpc = new RpcServerConnection('app.rapidreach', [this.transport])
             rpc.rpcServer?.manageRpc.exposeClassInstance(this.dataProvider, 'dataProvider')
             rpc.rpcServer?.manageRpc.exposeObject({
-                Hello: (arg: string) => {
-                    console.log(arg)
-                    return arg + ' World!'
+                authenticate: async (username: string, password: string) => {
+                    let result = {}
+                    const listResult = await this.dataProvider.getList('users', { filter: { username, password } })  
+                    if (listResult.data?.length === 1) {
+                        console.log(`${ username } logged in`)
+                        return { accessToken: '1234567890',
+                            user: {
+                                id: listResult.data[0]._id,
+                                fullName: listResult.data[0].fullName,
+                            }
+                        }    
+                    }
+                    return result
                 }
-            }, 'MyRpc')
+            }, 'authentication')
             
             this.server.listen(port, () => {
                 console.log(`socket.io server is running on port ${port}`);
